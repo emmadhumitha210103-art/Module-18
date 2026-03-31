@@ -1,71 +1,59 @@
-# Ex. No: 18A - Prim's Minimum Spanning Tree (MST) Algorithm
+# Ex. No: 18D - Travelling Salesman Problem (TSP)
 
 ## AIM:
-To write a Python program for **Prim's Minimum Spanning Tree (MST)** algorithm.
+To write a Python program to find the shortest possible route that visits every city exactly once and returns to the starting point using the **Travelling Salesman Problem (TSP)** approach.
 
 ## ALGORITHM:
 
-**Step 1**: Initialize the `key[]` array to infinity, set the first vertex's key to `0`, and create `mstSet[]` and `parent[]` arrays.
+**Step 1**: Start the program.
 
-**Step 2**: Select the vertex with the smallest key value not yet included in `mstSet`.
+**Step 2**: Input the number of cities and the distance matrix.
 
-**Step 3**: Add the selected vertex to `mstSet`.
+**Step 3**: Set the starting city (e.g., city `0`).
 
-**Step 4**: For all adjacent vertices:
-- If the edge weight is smaller than their current key value, and the vertex is not in `mstSet`, then:
-  - Update their key value
-  - Update their parent to the current vertex
+**Step 4**: Generate all possible permutations of the remaining cities.
 
-**Step 5**: Repeat Steps 2–4 until all vertices are included in the MST.
+**Step 5**: For each permutation:
+- Calculate the total cost of traveling through the permutation starting and ending at city `0`.
+- Keep track of the **minimum cost** and the corresponding route.
 
-**Step 6**: Print the resulting Minimum Spanning Tree using the `parent[]` array.
+**Step 6**: Return the **route** and the **minimum cost**.
+
+**Step 7**: End the program.
 
 ## PYTHON PROGRAM
 
 ```python
-import sys # Library for INT_MAX
-class Graph():
-	def __init__(self, vertices):
-		self.V = vertices
-		self.graph = [[0 for column in range(vertices)]
-					for row in range(vertices)]
-	def printMST(self, parent):
-		print ("Edge   Weight")
-		for i in range(1, self.V):
-			print (parent[i], "-", i, "  ",self.graph[i][parent[i]])
-	def minKey(self, key, mstSet):
-		min = sys.maxsize
-		for v in range(self.V):
-			if key[v] < min and mstSet[v] == False:
-				min = key[v]
-				min_index = v
-		return min_index
-	def primMST(self):
-		key = [sys.maxsize] * self.V
-		parent = [None] * self.V
-		key[0] = 0
-		mstSet = [False] * self.V
-		parent[0] = -1
-		for cout in range(self.V):
-			u=self.minKey(key,mstSet)
-			mstSet[u]=True
-			for v in range(self.V):
-			    if self.graph[u][v]>0 and mstSet[v]==False and key[v]>self.graph[u][v]:
-			        key[v]=self.graph[u][v]
-			        parent[v]=u
-		self.printMST(parent)
-g = Graph(5)
-g.graph = [ [0, 2, 0, 6, 0],
-			[2, 0, 3, 8, 5],
-			[0, 3, 0, 0, 7],
-			[6, 8, 0, 0, 9],
-			[0, 5, 7, 9, 0]]
-
-g.primMST();
+from sys import maxsize
+from itertools import permutations
+V = 4
+def travellingSalesmanProblem(graph, s):
+    vertex = []
+    for i in range(V):
+        if i != s:
+            vertex.append(i)
+    min_path = maxsize
+    next_permutation = permutations(vertex)
+    for perm in next_permutation:
+        current_pathweight = 0
+        k = s
+        for j in perm:
+            current_pathweight += graph[k][j]
+            k = j
+        current_pathweight += graph[k][s]
+        min_path = min(min_path, current_pathweight)
+    return min_path
+if __name__ == "__main__":
+    graph = [[0, 10, 15, 20],
+             [10, 0, 35, 25],
+             [15, 35, 0, 30],
+             [20, 25, 30, 0]]
+    s = int(input())
+    print(travellingSalesmanProblem(graph, s))
 ```
 
 ## OUTPUT
-<img width="1185" height="285" alt="image" src="https://github.com/user-attachments/assets/dbe463dd-2114-4579-a0f5-14678cdd12b3" />
+<img width="1185" height="198" alt="image" src="https://github.com/user-attachments/assets/86f36feb-a31b-4f64-b947-ad20cea3891b" />
 
 ## RESULT
-Therefore, the output is the example to write a Python program for **Prim's Minimum Spanning Tree (MST)** algorithm.
+Therefore, the output is the example to write a Python program to find the shortest possible route that visits every city exactly once and returns to the starting point using the **Travelling Salesman Problem (TSP)** approach.
